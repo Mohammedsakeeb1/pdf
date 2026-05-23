@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Split PDF - PDF Toolkit</title>
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Google Fonts - Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/split.css">
+    
+    <!-- PDF Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+    <script src="https://unpkg.com/pdf-lib/dist/pdf-lib.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+</head>
+<body>
+
+    <!-- Loading Overlay -->
+    <div id="loadingOverlay" class="loading-overlay">
+        <div class="spinner-professional"></div>
+        <h4 id="loadingText">Processing PDF...</h4>
+    </div>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-glass sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-file-pdf-fill" viewBox="0 0 16 16">
+                    <path d="M5.523 10.424c.14-.082.293-.162.459-.238a7.878 7.878 0 0 1-.45.606c-.28.337-.498.516-.635.572a.266.266 0 0 1-.035.012.282.282 0 0 1-.026-.044c-.056-.11-.054-.216.04-.408.108-.217.316-.395.647-.5zM11.512 8.358c.112-.043.223-.083.33-.12.288-.097.446-.14.512-.117.494.14.391.728.107 1.05-.205.23-.497.35-.839.36a1.403 1.403 0 0 1-.102-.007 8.358 8.358 0 0 0-.125-.827c-.015-.07-.023-.14-.03-.213zm-1.377-1.12c.11-.022.234-.038.371-.047a8.24 8.24 0 0 0-.174-.56c-.033-.1-.09-.237-.161-.341-.122-.18-.306-.298-.482-.285-.183.013-.303.14-.35.299-.047.157-.042.348.02.511.063.163.188.342.376.523zM8.62 9.043c.139-.102.273-.21.4-.322l.114-.094c.452-.392.846-.894 1.087-1.336a6.76 6.76 0 0 0-.594.319c-.307.168-.614.332-.911.481l-.082.04c-.391.198-.755.39-1.073.547-.15.074-.303.145-.456.216.14.12.284.246.43.376.341.305.673.666.92 1.015.068.097.133.198.195.303.094-.05.186-.1.277-.152z"/>
+                    <path d="M4 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H4zm.165 11.668c.09-.18.23-.343.438-.493a15.783 15.783 0 0 1 1.557-1.096 8.586 8.586 0 0 0-1.028-1.566c-.444-.59-.627-1.033-.692-1.456-.065-.42.03-.852.29-1.2.26-.35.638-.503 1.03-.519.39-.015.753.158 1.031.506.258.32.404.762.463 1.25.06.488.01 1.033-.158 1.588.207.394.487.803.81 1.202a15.54 15.54 0 0 1 1.482-1.06c.303-.19.63-.39 1.03-.547.446-.177.94-.271 1.422-.24.48.03.893.188 1.155.487.26.3.384.695.332 1.137-.052.441-.31.939-.78 1.285-.47.345-1.1.531-1.767.511a12.89 12.89 0 0 1-2.436-.453c-.392.592-.86 1.164-1.354 1.658-.014.014-.027.028-.04.041L8.04 14.69c-.301.302-.603.586-.908.835-.278.226-.596.435-.947.517-.35.082-.733.062-1.05-.128-.319-.19-.476-.524-.512-.865-.035-.34.062-.712.214-1.02.153-.307.362-.613.623-.844.27-.238.561-.43.86-.577l.062-.029z"/>
+                </svg>
+                PDF Toolkit
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="merge.html">Merge PDF</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="split.html">Split PDF</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content Wrapper -->
+    <main class="main-wrapper">
+        <div class="container">
+            <div id="uploadStage">
+                <div class="text-center mb-5">
+                    <h1 class="display-5 fw-bold text-indigo">Split PDF File</h1>
+                    <p class="text-muted">Extract pages from your PDF or split each page into a separate PDF.</p>
+                </div>
+                
+                <div class="row justify-content-center">
+                    <div class="col-lg-10">
+                        <div class="card-custom">
+                            <input type="file" id="fileInput" accept=".pdf" hidden>
+                            <div class="upload-zone text-center" id="dropZone">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="upload-icon mx-auto">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 16.5V9.75m0 0l3 3m-3-3l-3 3M6.75 19.5a4.5 4.5 0 01-1.41-8.775 5.25 5.25 0 0110.233-2.33 3 3 0 013.758 3.848A3.752 3.752 0 0118 19.5H6.75z" />
+                                </svg>
+                                <h4 class="mb-2">Drag & drop PDF file here</h4>
+                                <p class="text-muted mb-3">or click to browse from your device</p>
+                                <button type="button" class="btn btn-accent" id="browseBtn">Choose File</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Preview & Selection Stage (Hidden Initially) -->
+            <div id="previewStage" class="d-none">
+                <div class="split-options-box">
+                    <div class="row align-items-center">
+                        <div class="col-md-7">
+                            <h5 class="fw-bold mb-3">Cut-Point Splitting</h5>
+                            <div class="input-group">
+                                <span class="input-group-text bg-white">Split at Page</span>
+                                <input type="number" id="cutPointInput" class="form-control" placeholder="e.g. 3" min="1">
+                                <span class="input-group-text bg-light text-muted small" id="maxPagesHint"></span>
+                            </div>
+                            <p class="text-muted small mt-2 mb-0">Part 1 will contain pages 1 to X. Part 2 will contain pages X to end.</p>
+                        </div>
+                        <div class="col-md-5 text-md-end mt-3 mt-md-0">
+                            <button id="splitBtn" class="btn btn-accent btn-lg px-5">Split PDF Now</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="text-center mb-4">
+                    <h3 id="fileNameDisplay" class="fw-bold"></h3>
+                    <p class="text-muted" id="pageCountDisplay"></p>
+                    <div class="btn-group btn-group-sm">
+                        <button class="btn btn-outline-secondary" id="selectAllBtn">Select All</button>
+                        <button class="btn btn-outline-secondary" id="deselectAllBtn">Deselect All</button>
+                    </div>
+                </div>
+
+                <div id="pageGrid" class="page-grid">
+                    <!-- Thumbnails will be injected here -->
+                </div>
+            </div>
+
+            <!-- Result Stage (Hidden Initially) -->
+            <div id="resultStage" class="d-none">
+                <div class="text-center mb-5">
+                    <div class="mb-3">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" fill="currentColor" class="text-success bi bi-check-circle-fill" viewBox="0 0 16 16">
+                            <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
+                        </svg>
+                    </div>
+                    <h2 class="fw-bold">PDF Successfully Split!</h2>
+                    <p class="text-muted">Your files are ready for download.</p>
+                    <button class="btn btn-primary mt-3" onclick="location.reload()">Process Another File</button>
+                </div>
+
+                <div id="outputList" class="output-list col-lg-8 mx-auto">
+                    <!-- Result items injected here -->
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container text-center">
+            <p class="mb-0">&copy; 2024 PDF Toolkit. Built with privacy in mind. No files ever leave your device.</p>
+        </div>
+    </footer>
+
+    <!-- Bootstrap 5 JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Main JS -->
+    <script src="js/app.js"></script>
+    <!-- Split JS -->
+    <script src="js/split.js"></script>
+</body>
+</html>

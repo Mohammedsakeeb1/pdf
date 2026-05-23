@@ -1,2 +1,41 @@
-# pdf
-PDF Merger &amp; Splitter is a simple and efficient web  that allows users to manage PDF files with ease. PDFs into a single document or split large PDFs into separate files in just a few clicks. The platform offers a clean and user-friendly interface for fast processing. Designed for convenience, it helps save time and simplify PDF management tasks.
+# PDF Toolkit
+
+A professional, SaaS-level web application for managing PDF files directly in your browser. This toolkit provides essential PDF operations like merging and splitting without any backend processing, ensuring maximum privacy and speed.
+
+## Tech Stack
+- **Structure**: HTML5
+- **Styling**: CSS3, Bootstrap 5
+- **Logic**: Vanilla JavaScript
+- **Libraries (Future)**: 
+  - `pdf-lib` (PDF manipulation)
+  - `PDF.js` (PDF rendering)
+  - `FileSaver.js` (Saving files)
+  - `SortableJS` (Drag and drop reordering)
+
+## Folder Structure
+```
+/pdf-toolkit
+│
+├── index.html       # Landing page / Dashboard
+├── merge.html       # PDF Merger tool
+├── split.html       # PDF Splitter tool
+│
+├── /css
+│   ├── style.css    # Global design system & shared styles
+│   ├── merge.css    # Merger-specific styles
+│   ├── split.css    # Splitter-specific styles
+│
+├── /js
+│   ├── app.js       # Shared app logic
+│   ├── merge.js     # PDF Merger logic
+│   ├── split.js     # PDF Splitter logic
+│
+├── /assets          # Static assets
+│   ├── icons
+│   ├── images
+│
+└── README.md
+```
+
+## Work in Progress
+This project is currently in the initial setup phase. Core functionality and PDF processing logic are yet to be implemented.
