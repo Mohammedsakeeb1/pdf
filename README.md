@@ -37,5 +37,5 @@ A professional, SaaS-level web application for managing PDF files directly in yo
 └── README.md
 ```
 
-## Work in Progress
-This project is currently in the initial setup phase. Core functionality and PDF processing logic are yet to be implemented.
+thank you 
+mohammed sakeeb hanchinmani (ayaan)
